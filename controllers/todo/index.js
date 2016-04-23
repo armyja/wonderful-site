@@ -48,8 +48,8 @@ exports.renderTodo = function(req,res){
                         , title: 'Todo List'
                         , layout: '/todo/layout'
                         , time_now: time_now.toLocaleDateString()
-                        , tags: db.todoList.find({name: req.session.user}).distinct('tag')
-                        , contents : db.todoList.find({name: req.session.user}).distinct('content')
+                        //, tags: db.todoList.find({name: req.session.user}).distinct('tag')
+                        //, contents : db.todoList.find({name: req.session.user}).distinct('content')
                     });
                 }
             });
