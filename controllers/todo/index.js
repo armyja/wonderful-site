@@ -26,10 +26,11 @@ exports.deleteTodo = function (req, res, next) {
 
 exports.renderTodo = function(req,res){
     db.todoList.find({name:req.session.user})
-                .sort({done:1,endDate:1,content:-1,tag:-1})
+                .sort({done:1,endDate:1,tag:-1})
                 .exec(function(err,todos) {
         if (err) {next(err)
         }else{
+            var time_now = new Date();
             for (var i=0;i<todos.length;i++)
             {
                 todos[i].createYear=todos[i].createDate.getFullYear();
@@ -38,13 +39,14 @@ exports.renderTodo = function(req,res){
                 todos[i].endYear=todos[i].endDate.getFullYear();
                 todos[i].endMonth=todos[i].endDate.getMonth()+1;
                 todos[i].endDay=todos[i].endDate.getDate();
+                todos[i].remainDay=parseInt((todos[i].endDate-new Date(time_now.toLocaleDateString()))/1000/86400);
             }
         res.render('./todo/todo', {
             username: req.session.user
             , todos: todos
             , title: 'Todo List'
             , layout: '/todo/layout'
-            , time_now: new Date().toLocaleDateString()
+            , time_now: time_now.toLocaleDateString()
         });
     }});
 };

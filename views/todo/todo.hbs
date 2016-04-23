@@ -1,11 +1,11 @@
+<div class="main">
 <div class="pretty-table">
     <table>
         <thead>
         <tr>
             <th>标签</th>
             <th>内容</th>
-            <th>创建日期</th>
-            <th>截止日期</th>
+            <th>剩余天数</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -14,8 +14,7 @@
         <tr {{#if this.done}}class="delete"{{/if}}>
             <td>{{this.tag}}</td>
             <td>{{this.content}}</td>
-            <td>{{this.createYear}}-{{this.createMonth}}-{{this.createDay}}</td>
-            <td>{{this.endYear}}-{{this.endMonth}}-{{this.endDay}}</td>
+            <td>{{this.remainDay}}</td>
             <td><a href="/todo/delete/{{this._id}}" title="删除该条目">删除</a> -
         {{#if this.done}}
                 <a href="/todo/undone/{{this._id}}" title="恢复该条目">恢复</a>
@@ -28,7 +27,6 @@
         <tr>
             <td><input type="text" name="tag" list="tags" required form="create" autocomplete="off"></td>
             <td><input type="text" name="content" list="contents" required form="create" autocomplete="off"></td>
-            <td><input type="date" disabled value="{{time_now}}"></td>
             <td><input type="date" name="endDate" required form="create" min="{{time_now}}"></td>
             <td><input type="submit" value="添加" form="create"></td>
             <datalist id="tags">
@@ -47,5 +45,6 @@
 </div>
 <div class="dialog">
     <form action="/todo/create" method="post" accept-charset="utf-8" id="create"></form>
-    <p><br /><a href="/auth/login">回首页</a></p>
+    <p><a href="/auth/login">回首页</a></p>
+</div>
 </div>
