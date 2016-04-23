@@ -34,7 +34,7 @@ exports.renderTodo = function(req,res){
                 } else {
                     var time_now = new Date();
                     for (var i = 0; i < todos.length; i++) {
-                        todos[i].createYear = todos[i].createDate.getFullYear();
+                        todos[i].createYear = todos[i].createDate.getFullYear()%100;
                         todos[i].createMonth = todos[i].createDate.getMonth() + 1;
                         todos[i].createDay = todos[i].createDate.getDate();
                         todos[i].endYear = todos[i].endDate.getFullYear();
