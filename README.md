@@ -9,5 +9,5 @@
 ## 安装 & 配置
 1. 安装 mongoose
 2. `npm install`
-3. 修改 `db.js` 的 `mongoose.connect('**mongodb://127.0.0.1:27017/wonderful**');` 为自己的地址
+3. 修改 `db.js` 的 `mongoose.connect('mongodb://127.0.0.1:27017/wonderful');` 为自己的地址
 4. `npm start` 运行它吧~
