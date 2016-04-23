@@ -67,15 +67,19 @@ exports.logout = function (req, res) {
 };
 
 exports.login_get = function (req, res) {
-    if (res.locals.message) res.render('./auth/login', {title: '登录页面', layout: '/auth/layout'});
-    if (req.session.user || (req.cookies.remember && req.cookies.user)) {
-        var user = req.session.user || req.cookies.user;
-        res.locals.message = '<p class="msg success">' + '欢迎回来，' + user.name
-            + '。 你可以 <a href="./logout">立马滚粗</a>。'
-            + '<br /><br />不过在这之前，你可以访问 <a href="./restricted">私密区</a> 与 <a href="/todo">Todo List</a> 。'
-            + '</p>';
+    if (res.locals.message) {
+        res.render('./auth/login', {title: '登录页面', layout: '/auth/layout'});
+    } else {
+        if (req.session.user || (req.cookies.remember && req.cookies.user)) {
+            var user = req.session.user || req.cookies.user;
+            res.locals.message = '<p class="msg success">' + '欢迎回来，' + user.name
+                + '。 你可以 <a href="./logout">立马滚粗</a>。'
+                + '<br /><br />不过在这之前，你可以访问 <a href="./restricted">私密区</a> 与 <a href="/todo">Todo List</a> 。'
+                + '</p>';
+        }
+        res.render('./auth/login', {title: '登录页面', layout: '/auth/layout'});
     }
-    res.render('./auth/login', {title: '登录页面', layout: '/auth/layout'});
+
 };
 
 exports.login_post = function (req, res) {
