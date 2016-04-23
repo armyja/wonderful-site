@@ -41,7 +41,7 @@ function authenticate(name, pass, fn) {
 exports.restrict = function (req, res, next) {
     if (req.session.user || (req.cookies.remember && req.cookies.user)) {
         req.session.user = req.cookies.user;
-        res.cookie('remember', 1, { maxAge: 600000 });
+        res.cookie('remember', 1, {maxAge: 600000});
         next();
     } else {
         req.session.error = '请登录或注册';
@@ -60,20 +60,22 @@ exports.restricted = function (req, res) {
 exports.logout = function (req, res) {
     // destroy the user's session to log them out
     // will be re-created next request
-    res.clearCookie('remember',{});
+    res.clearCookie('remember', {});
     req.session.destroy(function () {
         res.redirect('./');
     });
 };
 
 exports.login_get = function (req, res) {
-    //req.session.user = req.session.user || "";
-    if (req.session.user || (req.cookies.remember && req.cookies.user))
-        res.locals.message = '<p class="msg success">' + '欢迎回来，' + req.cookies.user.name
+    if (res.locals.message) res.render('./auth/login', {title: '登录页面', layout: '/auth/layout'});
+    if (req.session.user || (req.cookies.remember && req.cookies.user)) {
+        var user = req.session.user || req.cookies.user;
+        res.locals.message = '<p class="msg success">' + '欢迎回来，' + user.name
             + '。 你可以 <a href="./logout">立马滚粗</a>。'
             + '<br /><br />不过在这之前，你可以访问 <a href="./restricted">私密区</a> 与 <a href="/todo">Todo List</a> 。'
             + '</p>';
-    res.render('./auth/login', {title: '登录页面',layout:'/auth/layout'});
+    }
+    res.render('./auth/login', {title: '登录页面', layout: '/auth/layout'});
 };
 
 exports.login_post = function (req, res) {
@@ -81,8 +83,8 @@ exports.login_post = function (req, res) {
         if (user) {
             // Regenerate session when signing in
             // to prevent fixation
-            res.cookie('remember', 1, { maxAge: 600000 });
-            res.cookie('user', user, { maxAge: 600000 });
+            res.cookie('remember', 1, {maxAge: 600000});
+            res.cookie('user', user, {maxAge: 600000});
             req.session.regenerate(function () {
                 // Store the user's primary key
                 // in the session store to be retrieved,
@@ -106,15 +108,20 @@ exports.createHash = function (req, res, next) {
     // and hash the password
     hash(req.body.password, function (err, salt, hash) {
         if (err) throw err;
-        var user = req.body;
-        new db.userList({
-            name: user.name
-            , email: user.email
+        db.userList.create({
+            name: req.body.name
+            , email: req.body.email
             , salt: salt
             , hash: hash
-        }).save(function(){
+        }, (function (err, user) {
+            req.session.user = {
+                name: user.name
+                , _id: user._id
+            };
+            req.cookies.user = req.session.user;
+            res.cookie('remember', 1, {maxAge: 600000});
             req.session.success = '注册成功，请登录';
             res.redirect('./login')
-        });
+        }));
     });
 };
