@@ -54,7 +54,7 @@ exports.jump_login = function (req, res) {
 };
 
 exports.restricted = function (req, res) {
-    res.send('Wahoo! restricted area, click to <a href="./logout">logout</a>');
+    res.send('管理员撤回了你的私藏信息并将你<a href="./logout">上交国家</a>');
 };
 
 exports.logout = function (req, res) {
@@ -74,7 +74,7 @@ exports.login_get = function (req, res) {
             var user = req.session.user || req.cookies.user;
             res.locals.message = '<p class="msg success">' + '欢迎回来，' + user.name
                 + '。 你可以 <a href="./logout">立马滚粗</a>。'
-                + '<br /><br />不过在这之前，你可以访问 <a href="./restricted">私密区</a> 与 <a href="/todo">Todo List</a> 。'
+                + '<br /><br />不过在这之前，你可以访问 <a href="./restricted">私密区</a> 或 <a href="/todo">ToDoList</a> 。'
                 + '</p>';
         }
         res.render('./auth/login', {title: '登录页面', layout: '/auth/layout'});
