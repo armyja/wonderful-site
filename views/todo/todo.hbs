@@ -29,13 +29,11 @@
                 <td><input title="截止日期" type="date" name="endDate" required form="create" min={{time_now}} value={{time_now}}></td>
                 <td><input type="submit" value="添加" form="create"></td>
                 <datalist id="tags">
-                    {{#each tags}}
-                    <option value="{{this}}">
-                    {{/each}}
+                    <option value="{{this.tag}}">
                 </datalist>
                 <datalist id="contents">
                     {{#each contents}}
-                    <option value="{{this}}">
+                    <option value="{{this.content}}">
                     {{/each}}
                 </datalist>
             </tr>
