@@ -1,6 +1,7 @@
 var hash = require('./pass').hash;
 var db = require('../../db');
 
+
 // Session-persisted message middleware
 
 exports.message = function (req, res, next) {
@@ -25,17 +26,25 @@ function authenticate(name, pass, fn) {
         // found the user
         hash(pass, user.salt, function (err, hash) {
             if (err) return fn(err);
-            if (hash === user.hash) return fn(null, user);
+            if (hash === user.hash) {
+                user = {
+                    name: user.name
+                    , _id: user._id
+                };
+                return fn(null, user);
+            }
             fn(new Error('invalid password'));
         })
     })
 }
 
 exports.restrict = function (req, res, next) {
-    if (req.session.user) {
+    if (req.session.user || (req.cookies.remember && req.cookies.user)) {
+        req.session.user = req.cookies.user;
+        res.cookie('remember', 1, { maxAge: 600000 });
         next();
     } else {
-        req.session.error = '请重新登录';
+        req.session.error = '请登录或注册';
         res.redirect('/auth/login');
     }
 };
@@ -51,6 +60,7 @@ exports.restricted = function (req, res) {
 exports.logout = function (req, res) {
     // destroy the user's session to log them out
     // will be re-created next request
+    res.clearCookie('remember',{});
     req.session.destroy(function () {
         res.redirect('./');
     });
@@ -58,8 +68,8 @@ exports.logout = function (req, res) {
 
 exports.login_get = function (req, res) {
     //req.session.user = req.session.user || "";
-    if (req.session.user)
-        res.locals.message = '<p class="msg success">' + '欢迎回来，' + req.session.user.name
+    if (req.session.user || (req.cookies.remember && req.cookies.user))
+        res.locals.message = '<p class="msg success">' + '欢迎回来，' + req.cookies.user.name
             + '。 你可以 <a href="./logout">立马滚粗</a>。'
             + '<br /><br />不过在这之前，你可以访问 <a href="./restricted">私密区</a> 与 <a href="/todo">Todo List</a> 。'
             + '</p>';
@@ -71,6 +81,8 @@ exports.login_post = function (req, res) {
         if (user) {
             // Regenerate session when signing in
             // to prevent fixation
+            res.cookie('remember', 1, { maxAge: 600000 });
+            res.cookie('user', user, { maxAge: 600000 });
             req.session.regenerate(function () {
                 // Store the user's primary key
                 // in the session store to be retrieved,

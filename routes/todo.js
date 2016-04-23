@@ -4,18 +4,18 @@ var db = require('../db');
 var express = require('express');
 var router = express.Router();
 
-router.all('*',auth.restrict);
+router.all('*', auth.restrict);
 
-router.get('/', todo.renderTodo);
+router.get('/', auth.restrict, todo.renderTodo);
 
-router.get('/delete/:id', todo.deleteTodo);
+router.get('/delete/:id', auth.restrict, todo.deleteTodo);
 
-router.get('/done/:id', todo.done);
+router.get('/done/:id', auth.restrict, todo.done);
 
-router.get('/undone/:id', todo.undone);
+router.get('/undone/:id', auth.restrict, todo.undone);
 
-router.put('/update/:id', todo.updateTodo);
+router.put('/update/:id', auth.restrict, todo.updateTodo);
 
-router.post('/create', todo.createTodo);
+router.post('/create', auth.restrict, todo.createTodo);
 
 module.exports = router;
