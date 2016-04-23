@@ -13,3 +13,6 @@
 3. `cd ./wonderful-site`
 3. 修改 `wonderful-site/db.js` 的 `mongoose.connect('mongodb://127.0.0.1:27017/wonderful');` 为自己的地址
 4. `npm install && node ./bin/www` 运行它吧~ （Windows 系统下，路径使用反斜杠）
+
+## demo
+http://todo.armyja.cn
