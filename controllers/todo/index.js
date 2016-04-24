@@ -49,7 +49,7 @@ exports.renderTodo = function(req,res){
                 }
             });
     } else {
-        req.session.error = '请登录或注册';
+        req.session.error = '我忘了你是谁...';
         res.redirect('/auth/login');
     }
 };
