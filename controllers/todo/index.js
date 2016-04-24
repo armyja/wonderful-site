@@ -49,12 +49,24 @@ exports.renderTodo = function(req,res){
                         , title: 'Todo List'
                         , layout: '/todo/layout'
                         , time_now: utils.YYYYMMDD(time_now)
-                        //, tags: db.todoList.find({name: req.session.user}).distinct('tag')
-                        //, contents : db.todoList.find({name: req.session.user}).distinct('content')
+                        , tags: res.locals.tags
+                        , contents : res.locals.contents
                     });
                 }
             });
     }
+};
+
+exports.loadTagsAndContents = function(req,res,next){
+    db.todoList.find({name: req.session.user}).distinct('tag',function(err,tags){
+        if (err) return next(err);
+        db.todoList.find({name: req.session.user}).distinct('content',function(err,contents){
+            if (err) return next(err);
+            res.locals.tags = tags;
+            res.locals.contents = contents;
+            next();
+        });
+    });
 };
 
 exports.updateTodo = function(req,res,next){

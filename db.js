@@ -23,6 +23,7 @@ var todoListSchema = mongoose.Schema({
     , endDate: {type: Date}
     , content: {type: String}
     , done: {type: Boolean}
+    , remainDay: {type: Number}
 });
 
 var userList = mongoose.model('users', userListSchema);

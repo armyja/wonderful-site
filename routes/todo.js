@@ -6,7 +6,7 @@ var router = express.Router();
 
 router.all('*', auth.restrict);
 
-router.get('/', todo.renderTodo);
+router.get('/', todo.loadTagsAndContents, todo.renderTodo);
 
 router.get('/delete/:id', todo.deleteTodo);
 
