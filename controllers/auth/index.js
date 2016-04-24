@@ -54,7 +54,7 @@ exports.jump_login = function (req, res) {
 };
 
 exports.restricted = function (req, res) {
-    res.send('管理员撤回了你的私藏信息并将你<a href="./logout">上交国家</a>');
+    res.send('管理员撤回了你的私藏信息并将你<a href="./logout">上交国家</a>。若想要泄愤，就在登录页面输入两次 shit ，进去泼粪咯');
 };
 
 exports.logout = function (req, res) {
