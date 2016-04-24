@@ -48,6 +48,9 @@ exports.renderTodo = function(req,res){
                     });
                 }
             });
+    } else {
+        req.session.error = '请登录或注册';
+        res.redirect('/auth/login');
     }
 };
 
