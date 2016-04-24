@@ -1,4 +1,5 @@
 var db = require('../../db');
+const utils = require('utility');
 
 exports.createTodo = function (req, res, next) {
     new db.todoList({
@@ -47,7 +48,7 @@ exports.renderTodo = function(req,res){
                         , todos: todos
                         , title: 'Todo List'
                         , layout: '/todo/layout'
-                        , time_now: time_now.getFullYear().toString() + '-' + (time_now.getMonth()+1).toString() + '-' + time_now.getDate().toString()
+                        , time_now: utils.YYYYMMDD(time_now)
                         //, tags: db.todoList.find({name: req.session.user}).distinct('tag')
                         //, contents : db.todoList.find({name: req.session.user}).distinct('content')
                     });
