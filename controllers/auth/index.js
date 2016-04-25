@@ -19,7 +19,7 @@ exports.message = function (req, res, next) {
 // Authenticate using our plain-object database of doom!
 
 function authenticate(name, pass, fn) {
-    db.userList.findOne({name: name}, function (err, user) {
+    db.userList.findOne({$or: [{name: name},{email:name}]}, function (err, user) {
         if (!user) return fn(new Error('cannot find user'));
         // apply the same algorithm to the POSTed password, applying
         // the hash against the pass / salt, if there is a match we

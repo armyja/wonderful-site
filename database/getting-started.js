@@ -76,8 +76,15 @@ dog.findSimilarTypes(function (err, dogs) {
 var Tank = mongoose.model('Animal', animalSchema);
 
 
-Tank.create({ name: 'small' }, function (err, small) {
+Tank.create({ name: 'bbbbig',type:"aaa" }, function (err, small) {
     console.log(small);
     if (err) return handleError(err);
     // saved!
+});
+
+Tank.find({ $or: [
+    { type: "aaa" },
+    { name: "big" }
+]},function (err,res) {
+    console.log(res);
 });

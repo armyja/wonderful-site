@@ -3,7 +3,7 @@ const utils = require('utility');
 
 exports.createTodo = function (req, res, next) {
     new db.todoList({
-        name: req.session.user
+        name: req.session.user._id
         , tag: req.body.tag
         , content: req.body.content
         , endDate: req.body.endDate
